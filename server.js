@@ -51,12 +51,12 @@ low(adapter)
             .last()
             .assign({ id: Date.now().toString() })
             .write()
-            .then((user) => res.send({ id: user.id }));
+            .then((user) => res.send({ token: user.id }));
         }
       }
     });
 
-    app.get("/login", async (req, res) => {
+    app.post("/login", async (req, res) => {
       const username = req.body.username;
       const email = req.body.email;
       const password = req.body.password;
@@ -68,12 +68,28 @@ low(adapter)
 
       if (user) {
         if (user.password === password) {
-          res.send({ id: user.id });
+          res.send({ token: user.id });
         } else {
           res.send({ error: "wrong password" });
         }
       } else {
         res.send({ error: "user not found" });
+      }
+    });
+
+    app.get("/me", async (req, res) => {
+      const token = req.query.token;
+
+      let user = await db.get("users").find({ id: token }).value();
+
+      if (!user) {
+        res.send({ error: "invalid token" });
+      } else {
+        res.send({
+          id: user.id,
+          username: user.username,
+          email: user.email,
+        });
       }
     });
 

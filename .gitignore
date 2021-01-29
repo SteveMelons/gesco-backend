@@ -1,2 +1,2 @@
 node_modules
-db.json
+# db.json // should add this back later, just keeping it for testing
