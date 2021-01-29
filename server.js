@@ -27,20 +27,22 @@ low(adapter)
       const password = req.body.password;
 
       if (!validateUsername(username)) {
-        res.status(400).send("invalid username");
+        res.status(400).send({ error: "invalid username" });
       } else if (!validateEmail(email)) {
-        res.status(400).send("invalid email");
+        res.status(400).send({ error: "invalid email" });
       } else if (!validatePassword(password)) {
-        res.status(400).send("invalid password");
+        res.status(400).send({ error: "invalid password" });
       } else {
         if (
           await db.get("users").find({ username: req.body.username }).value()
         ) {
-          res.status(400).send("username already exists");
+          res.status(400).send({ error: "username already exists" });
         } else if (
           await db.get("users").find({ email: req.body.email }).value()
         ) {
-          res.status(400).send("email is already linked to an account");
+          res
+            .status(400)
+            .send({ error: "email is already linked to an account" });
         } else {
           db.get("users")
             .push({
@@ -70,10 +72,10 @@ low(adapter)
         if (user.password === password) {
           res.send({ token: user.id });
         } else {
-          res.status(400).send("wrong password");
+          res.status(400).send({ error: "wrong password" });
         }
       } else {
-        res.status(400).send("user not found");
+        res.status(400).send({ error: "user not found" });
       }
     });
 
@@ -83,7 +85,7 @@ low(adapter)
       let user = await db.get("users").find({ id: token }).value();
 
       if (!user) {
-        res.status(400).send("invalid token");
+        res.status(400).send({ error: "invalid token" });
       } else {
         res.send({
           id: user.id,
