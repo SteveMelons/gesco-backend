@@ -5,6 +5,12 @@
       "email": "bob@bob.com",
       "password": "bobby12",
       "id": "1611916993321"
+    },
+    {
+      "username": "bobbob",
+      "email": "bob@bob.net",
+      "password": "bobbob",
+      "id": "1611951479775"
     }
   ]
 }
