@@ -59,13 +59,14 @@ low(adapter)
     });
 
     app.post("/login", async (req, res) => {
-      const username = req.body.username;
-      const email = req.body.email;
+      const usernameOrEmail = req.body.usernameOrEmail;
       const password = req.body.password;
 
       let user = await db
         .get("users")
-        .find((u) => u.username === username || u.email === email)
+        .find(
+          (u) => u.username === usernameOrEmail || u.email === usernameOrEmail
+        )
         .value();
 
       if (user) {
