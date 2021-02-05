@@ -112,7 +112,29 @@ low(adapter)
     });
 
     // Set db default values
-    return db.defaults({ users: [] }).write();
+    return db
+      .defaults({
+        users: [
+          {
+            username: "bobby12",
+            email: "bob@bob.com",
+            familyDoctorName: "John Meyer",
+            familyDoctorEmail: "john@meyer.com",
+            phone: "2039481028",
+            emergencyPhone: "203941247a8",
+            password: "bobby12",
+            role: "patient",
+          },
+          {
+            username: "tommy12",
+            email: "bob@bob.com",
+            phone: "2035464628",
+            password: "tommy12",
+            role: "doctor",
+          },
+        ],
+      })
+      .write();
   })
   .then(() => {
     app.listen(process.env.PORT || 3000, () => console.log("listening"));
