@@ -63,7 +63,7 @@ low(adapter)
             .last()
             .assign({ id: Date.now().toString() })
             .write()
-            .then((user) => res.send({ token: user.id }));
+            .then((user) => res.send({ token: user.id, role: user.role }));
         }
       }
     });
@@ -116,6 +116,7 @@ low(adapter)
       .defaults({
         users: [
           {
+            id: "126451265412",
             username: "bobby12",
             email: "bob@bob.com",
             familyDoctorName: "John Meyer",
@@ -126,6 +127,7 @@ low(adapter)
             role: "patient",
           },
           {
+            id: "48065478357315",
             username: "tommy12",
             email: "bob@bob.com",
             phone: "2035464628",
