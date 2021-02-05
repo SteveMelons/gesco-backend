@@ -24,7 +24,12 @@ low(adapter)
     app.post("/register", async (req, res) => {
       const username = req.body.username;
       const email = req.body.email;
+      const familyDoctorName = req.body.familyDoctorName;
+      const familyDoctorEmail = req.body.familyDoctorEmail;
+      const phone = req.body.phone;
+      const emergencyPhone = req.body.emergencyPhone;
       const password = req.body.password;
+      const role = req.body.role;
 
       if (!validateUsername(username)) {
         res.status(400).send({ error: "invalid username" });
@@ -48,7 +53,12 @@ low(adapter)
             .push({
               username,
               email,
+              familyDoctorName,
+              familyDoctorEmail,
+              phone,
+              emergencyPhone,
               password,
+              role,
             })
             .last()
             .assign({ id: Date.now().toString() })
@@ -71,7 +81,7 @@ low(adapter)
 
       if (user) {
         if (user.password === password) {
-          res.send({ token: user.id });
+          res.send({ token: user.id, role: user.role });
         } else {
           res.status(400).send({ error: "wrong password" });
         }
@@ -92,26 +102,14 @@ low(adapter)
           id: user.id,
           username: user.username,
           email: user.email,
+          familyDoctorName: user.familyDoctorName,
+          familyDoctorEmail: user.familyDoctorEmail,
+          phone: user.phone,
+          emergencyPhone: user.emergencyPhone,
+          role: user.role,
         });
       }
     });
-
-    // GET /posts/:id
-    // app.get("/posts/:id", (req, res) => {
-    //   const post = db.get("posts").find({ id: req.params.id }).value();
-
-    //   res.send(post);
-    // });
-
-    // POST /posts
-    // app.post("/posts", (req, res) => {
-    //   db.get("posts")
-    //     .push(req.body)
-    //     .last()
-    //     .assign({ id: Date.now().toString() })
-    //     .write()
-    //     .then((post) => res.send(post));
-    // });
 
     // Set db default values
     return db.defaults({ users: [] }).write();
